@@ -1,0 +1,45 @@
+name: Build and Run Docker Containers
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-run-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-qemu-action@v2
+
+    - name: Build Docker container 1
+      run: docker build -t itznox/database-service:1.2 -f C:\Users\Timothy\Desktop\CloudComputing\dockerfile_database.txt C:\Users\Timothy\Desktop\CloudComputing
+
+    - name: Build Docker container 2
+      run: docker build -t itznox/app-service:1.2 -f C:\Users\Timothy\Desktop\CloudComputing\dockerfile_microservice.txt C:\Users\Timothy\Desktop\CloudComputing
+      
+    - name: Run Docker container 1
+      run: docker run -d --network server --name container2 -p 8000:8000 itznox/database-service:1.2
+
+    - name: Run Docker container 2
+      run: docker run -d --network server --name container1 itznox/app-service:1.2
+
+    - name: Copy new code to container 1
+      run: docker cp . container1:/app
+
+    - name: Copy new code to container 2
+      run: docker cp . container2:/app
+
+    - name: Stop and remove container 1
+      run: |
+        docker stop container1
+        docker rm container1
+
+    - name: Stop and remove container 2
+      run: |
+        docker stop container2
+        docker rm container2
