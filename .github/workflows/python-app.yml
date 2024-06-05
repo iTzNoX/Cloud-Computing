@@ -17,10 +17,10 @@ jobs:
       uses: docker/setup-qemu-action@v2
 
     - name: Build Docker container 1
-      run: docker build -t itznox/database-service:1.2 -f C:\Users\Timothy\Desktop\CloudComputing\dockerfile_database.txt C:\Users\Timothy\Desktop\CloudComputing
+      run: docker build -t itznox/database-service:1.2 -f ./dockerfile_database.txt .
 
     - name: Build Docker container 2
-      run: docker build -t itznox/app-service:1.2 -f C:\Users\Timothy\Desktop\CloudComputing\dockerfile_microservice.txt C:\Users\Timothy\Desktop\CloudComputing
+      run: docker build -t itznox/app-service:1.2 -f ./dockerfile_microservice.txt .
       
     - name: Run Docker container 1
       run: docker run -d --network server --name container2 -p 8000:8000 itznox/database-service:1.2
