@@ -23,10 +23,10 @@ jobs:
       run: docker build -t itznox/app-service:1.2 -f ./dockerfile_microservice.txt .
       
     - name: Run Docker container 1
-      run: docker run -d --network server --name container2 -p 8000:8000 itznox/database-service:1.2
+      run: docker run -d --network server --name container1 -p 8000:8000 itznox/database-service:1.2
 
     - name: Run Docker container 2
-      run: docker run -d --network server --name container1 itznox/app-service:1.2
+      run: docker run -d --network server --name container2 itznox/app-service:1.2
 
     - name: Copy new code to container 1
       run: docker cp . container1:/app
