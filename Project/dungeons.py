@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import json_database
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -398,7 +399,7 @@ def get_valid_players(floor):
 
     return valid_players
 
-client.run("MTI0MzMwNDcxOTA4Mjk3OTM5OQ.GrE_qm.mDPSuocP2e4xrOHgY7MUO3LaDJoerJ7DfLM9jE")
+client.run("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0")
 
 #TODO
 # Done

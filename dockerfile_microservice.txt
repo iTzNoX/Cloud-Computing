@@ -1,0 +1,15 @@
+# Dockerfile für den Container mit dem App-Microservice
+FROM python:3
+
+# Arbeitsverzeichnis im Container
+WORKDIR /app
+
+# Kopiere alle Dateien außer dungeons.py und main.py in das Arbeitsverzeichnis
+COPY . /app
+
+# Installation der Abhängigkeiten
+RUN pip install discord.py
+RUN pip install boto3
+
+# Befehl zum Ausführen des Microservices
+CMD ["python", "app.py"]

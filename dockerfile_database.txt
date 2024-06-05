@@ -1,0 +1,14 @@
+# Dockerfile für den Container mit dem Datenbank-Microservice
+FROM python:3
+
+# Arbeitsverzeichnis im Container
+WORKDIR /app
+
+# Kopiere alle Dateien außer json_database.py und database.json in das Arbeitsverzeichnis
+COPY . /app
+
+# Installation der Abhängigkeiten
+RUN pip install discord.py
+
+# Befehl zum Ausführen des Microservices
+CMD ["python", "database.py"]

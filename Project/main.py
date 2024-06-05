@@ -4,5 +4,5 @@ if __name__ == "__main__":
     # runs the bot
     dungeons.on_ready()
 
-# JOIN Link: https://discord.com/oauth2/authorize?client_id=1243304719082979399&permissions=2194342935616&scope=bot
-# Token = MTI0MzMwNDcxOTA4Mjk3OTM5OQ.GrE_qm.mDPSuocP2e4xrOHgY7MUO3LaDJoerJ7DfLM9jE
+# JOIN Link: https://discord.com/oauth2/authorize?client_id=1247927018579038278&permissions=8&scope=bot
+# Token = MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0
