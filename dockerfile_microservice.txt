@@ -4,12 +4,15 @@ FROM python:3
 # Arbeitsverzeichnis im Container
 WORKDIR /app
 
-# Kopiere alle Dateien außer dungeons.py und main.py in das Arbeitsverzeichnis
-COPY . /app
+# Kopiere dungeons.py und main.py in das Arbeitsverzeichnis
+COPY Project/dungeons.py /app/
+COPY Project/main.py /app/
 
 # Installation der Abhängigkeiten
 RUN pip install discord.py
 RUN pip install boto3
+RUN pip install requests
+RUN pip install flask 
 
 # Befehl zum Ausführen des Microservices
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]

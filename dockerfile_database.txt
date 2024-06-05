@@ -4,11 +4,12 @@ FROM python:3
 # Arbeitsverzeichnis im Container
 WORKDIR /app
 
-# Kopiere alle Dateien außer json_database.py und database.json in das Arbeitsverzeichnis
-COPY . /app
+# Kopiere json_database.py und database.json in das Arbeitsverzeichnis im Container
+COPY Project/json_database.py Project/database.json /app/
 
 # Installation der Abhängigkeiten
 RUN pip install discord.py
+RUN pip install flask
 
 # Befehl zum Ausführen des Microservices
-CMD ["python", "database.py"]
+CMD ["python", "-m", "http.server", "8000"]

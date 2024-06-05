@@ -1,52 +1,79 @@
+from flask import Flask, jsonify, request
 import os
 import json
 
-# Create json database
-database = {}
+app = Flask(__name__)
 
-def initialize_database(file_name='database.json'):
-    # Check if the file exists, if not, create an empty JSON file
-    if not os.path.exists(file_name):
-        with open(file_name, 'w') as f:
-            json.dump({}, f)
-        print(f"Created new database file: {file_name}")
+# Pfad zur JSON-Datenbankdatei
+database_file = 'database.json'
 
-def save_database(file_name='database.json'):
-    with open(file_name, 'w') as f:
-        json.dump(database, f, indent=4)
+# Überprüfen, ob die Datenbankdatei vorhanden ist, und ggf. eine leere Datenbank erstellen
+if not os.path.exists(database_file):
+    with open(database_file, 'w') as f:
+        json.dump({}, f)
 
-def load_database(file_name='database.json'):
-    global database
-    try:
-        with open(file_name, 'r') as f:
-            database = json.load(f)
-    except FileNotFoundError:
-        database = {}
+# Routen für die CRUD-Operationen auf der Datenbank
 
-def add_data(key, value):
-    global database
+@app.route('/database', methods=['GET'])
+def get_database():
+    # Lade die Datenbank
+    with open(database_file, 'r') as f:
+        database = json.load(f)
+    return jsonify(database)
+
+@app.route('/database/<key>', methods=['GET'])
+def get_data(key):
+    # Lade die Datenbank
+    with open(database_file, 'r') as f:
+        database = json.load(f)
+    # Rückgabe der Daten für den angegebenen Schlüssel
+    return jsonify({key: database.get(key, 'Key not found')})
+
+@app.route('/database', methods=['POST'])
+def add_data():
+    # Lese die Daten aus der Anfrage
+    data = request.json
+    key = data.get('key')
+    value = data.get('value')
+    # Lade die Datenbank
+    with open(database_file, 'r') as f:
+        database = json.load(f)
+    # Füge neue Daten hinzu
     database[key] = value
-    save_database()
-    print(f"Data added: {key} -> {value}")
+    # Speichere die aktualisierte Datenbank
+    with open(database_file, 'w') as f:
+        json.dump(database, f, indent=4)
+    return jsonify({'message': 'Data added successfully'})
 
+@app.route('/database/<key>', methods=['PUT'])
+def update_data(key):
+    # Lese die Daten aus der Anfrage
+    data = request.json
+    value = data.get('value')
+    # Lade die Datenbank
+    with open(database_file, 'r') as f:
+        database = json.load(f)
+    # Aktualisiere die Daten für den angegebenen Schlüssel
+    database[key] = value
+    # Speichere die aktualisierte Datenbank
+    with open(database_file, 'w') as f:
+        json.dump(database, f, indent=4)
+    return jsonify({'message': 'Data updated successfully'})
+
+@app.route('/database/<key>', methods=['DELETE'])
 def remove_data(key):
-    global database
+    # Lade die Datenbank
+    with open(database_file, 'r') as f:
+        database = json.load(f)
+    # Überprüfe, ob der Schlüssel vorhanden ist
     if key in database:
         del database[key]
-        save_database()
-        print(f"Data with key '{key}' removed.")
+        # Speichere die aktualisierte Datenbank
+        with open(database_file, 'w') as f:
+            json.dump(database, f, indent=4)
+        return jsonify({'message': f'Data with key {key} removed successfully'})
     else:
-        print(f"Key '{key}' not found.")
+        return jsonify({'message': f'Key {key} not found'})
 
-def update_data(key, value):
-    global database
-    if key in database:
-        database[key] = value
-        save_database()
-        print(f"Data updated: {key} -> {value}")
-    else:
-        print(f"Key '{key}' not found. Use add_data to add new data.")
-
-# Initialize and load the database at the start
-initialize_database()
-load_database()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

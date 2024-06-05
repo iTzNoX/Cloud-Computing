@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import json_database
 
+database = json_database.database_file
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.reactions = True
@@ -18,8 +20,8 @@ f4_queue = {}
 f5_queue = {}
 f6_queue = {}
 f7_queue = {}
-target_channel = 1243315943736606833
-vc = 1243315994273910894
+target_channel = 1247921878857678921
+vc = 1247921762155495580
 f1 = None
 f2 = None
 f3 = None
@@ -93,7 +95,7 @@ async def on_reaction_add(reaction, user):
     better_queue = False
     opposite_floor = [f1_queue, f2_queue, f3_queue, f4_queue, f5_queue, f6_queue, f7_queue]
     guild = reaction.message.guild
-    category_name = "════ Dungeon Queue ════"
+    category_name = "Projektbereich"
     category = discord.utils.get(guild.categories, name=category_name)
 
     # wenn auf floor 1-7 reacted wird und man in dem vc ist
@@ -297,7 +299,7 @@ async def on_reaction_add(reaction, user):
                     else:
                         print(f"Channel {new_channel_id} not found")
                 # wenn 5 leute in der queue 1-4 sind, move zusammen--------------------------
-                elif len(floor) == 5:
+                elif len(floor) == 1:
                     player = list(floor.keys())
 
                     # channel erstellen
@@ -310,12 +312,12 @@ async def on_reaction_add(reaction, user):
 
                     # moves first 5 players in queue
                     if new_channel is not None:
-                        for i in range(5):
-                            await player[i].move_to(new_channel)
+                        dcuser = guild.get_member_named(player[0])
+                        await dcuser.move_to(new_channel)
 
                         # removes first 5 players from low_queue
                         players = list(floor.items())
-                        players[5:]
+                        players[1:]
 
                     else:
                         print(f"Channel {new_channel_id} not found")
@@ -402,7 +404,9 @@ def get_valid_players(floor):
 client.run("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0")
 
 #TODO
-# Done
+# json_database Logikanpassen, dass bei aufruf direkt key value übergeben werden kann
+# add_data(username, guild.username)
+# Logik in json_database so anpassen, dass nicht nur ein dict, sondern eine JSON Datei erstellt wird
 
 # HOW TO USE
 # send Floor 1-7 Messages into chat and react with class reactions
