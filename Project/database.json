@@ -1,15 +1,1 @@
-{
-    "User = uppercaseguy": {
-        "user": "uppercaseguy",
-        "user_id": "383743067422720002",
-        "user_discriminator": "0",
-        "nickname": "None",
-        "avatar": "https://cdn.discordapp.com/avatars/383743067422720002/a_f07e11ab97f926db8bdd21ccb3fe67bb.gif?size=1024",
-        "roles": [
-            "@everyone",
-            "Developer"
-        ],
-        "joined_at": "2024-06-05 14:35:33.313000+00:00",
-        "created_at": "2017-11-24 22:17:56.875000+00:00"
-    }
-}
+{}

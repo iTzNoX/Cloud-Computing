@@ -1,30 +1,26 @@
 import requests
 import importlib.util
 import sys
+import os
 
-# handles container requests
-#------------------------------------------------------
+def download_and_import_module(url, module_name, module_path='/app'):
+    response = requests.get(url)
+    if response.status_code == 200:
+        module_code = response.text
+        module_file_path = os.path.join(module_path, f'{module_name}.py')
+        with open(module_file_path, 'w') as file:
+            file.write(module_code)
+
+        spec = importlib.util.spec_from_file_location(module_name, module_file_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        sys.modules[module_name] = module
+    else:
+        raise Exception(f"Failed to download {module_name}.py from {url}")
+
 # URL des Datenbank-Microservice, der json_database.py hostet
-url = "http://container2:8000/json_database.py"
-
-# Herunterladen der Datei in den Speicher
-response = requests.get(url)
-if response.status_code == 200:
-    code = response.text
-else:
-    raise Exception("Failed to download json_database.py")
-
-# Speichern der Datei im temporären Verzeichnis
-temp_module_path = '/app/json_database.py'
-with open(temp_module_path, 'w') as file:
-    file.write(code)
-
-# Laden des Moduls von der temporären Datei
-spec = importlib.util.spec_from_file_location("json_database", temp_module_path)
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
-sys.modules["json_database"] = module
-#------------------------------------------------------
+json_database_url = "http://container2:8000/json_database.py"
+download_and_import_module(json_database_url, "json_database")
 
 import dungeons
 

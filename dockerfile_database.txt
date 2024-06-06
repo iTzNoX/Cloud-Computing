@@ -12,4 +12,4 @@ RUN pip install discord.py
 RUN pip install flask
 
 # Befehl zum Ausführen des Microservices
-CMD ["python", "-m", "http.server", "8000"]
+CMD ["python", "json_database.py"]

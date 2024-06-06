@@ -411,7 +411,7 @@ def get_valid_players(floor):
 def get_userdata(user):
     url = "http://container2:8000/database"
     data = {
-        "user": user.name,
+        "user": str(user.name),
         "user_id": str(user.id),
         "user_discriminator": str(user.discriminator),
         "nickname": str(user.nick),
