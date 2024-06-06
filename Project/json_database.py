@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request
 import os
 import json
 
@@ -19,10 +19,19 @@ def get_database():
     return database
 
 @app.route('/database', methods=['POST'])
-def add_data(givenkey, givenvalue):
+def add_data():
+    data = request.json
     # takes info and adds data
-    key = givenkey
-    value = givenvalue
+    key = data["user"]
+    value = {
+        "user_id": data["user_id"],
+        "user_discriminator": data["user_discriminator"],
+        "nickname": data["nickname"],
+        "avatar": data["avatar"],
+        "roles": data["roles"],
+        "joined_at": data["joined_at"],
+        "created_at": data["created_at"]
+    }
     database = get_database()
     database[key] = value
 
@@ -64,4 +73,4 @@ def remove_data(key):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)

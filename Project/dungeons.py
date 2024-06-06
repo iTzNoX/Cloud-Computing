@@ -1,6 +1,11 @@
 import discord
 from discord.ext import commands
 import json_database
+import os
+import json
+import requests
+
+TOKEN = os.getenv("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -404,21 +409,22 @@ def get_valid_players(floor):
     return valid_players
 
 def get_userdata(user):
-    json_database.add_data(
-
-        "User = "+ user.name,
-        {
-            "user": str(user.name),
-            "user_id": str(user.id),
-            "user_discriminator": str(user.discriminator),
-            "nickname": str(user.nick),
-            "avatar": str(user.avatar),
-            "roles": [role.name for role in user.roles],
-            "joined_at": str(user.joined_at),
-            "created_at": str(user.created_at)
-        }
-    )
-    print("Userdata added")
+    url = "http://container2:8000/database"
+    data = {
+        "user": user.name,
+        "user_id": str(user.id),
+        "user_discriminator": str(user.discriminator),
+        "nickname": str(user.nick),
+        "avatar": str(user.avatar),
+        "roles": [role.name for role in user.roles],
+        "joined_at": str(user.joined_at),
+        "created_at": str(user.created_at)
+    }
+    response = requests.post(url, json=data)
+    if response.status_code == 200:
+        print("Userdata added")
+    else:
+        print("Failed to add userdata")
 
 client.run("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0")
 

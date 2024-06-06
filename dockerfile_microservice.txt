@@ -1,5 +1,5 @@
 # Dockerfile für den Container mit dem App-Microservice
-FROM python:3
+FROM python:3.11
 
 # Arbeitsverzeichnis im Container
 WORKDIR /app
