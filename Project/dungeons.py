@@ -2,8 +2,6 @@ import discord
 from discord.ext import commands
 import json_database
 
-database = json_database.database_file
-
 intents = discord.Intents.default()
 intents.message_content = True
 intents.reactions = True
@@ -102,6 +100,9 @@ async def on_reaction_add(reaction, user):
     if reaction.message.channel.id == target_channel and reaction.message.id in (f1, f2, f3, f4, f5, f6, f7):
         # remove reaction
         await reaction.remove(user)
+
+        #saves data of all users who ever used or tried to use the queue
+        get_userdata(user)
 
         # checks for floor queue
         floor_id = reaction.message.id
@@ -336,9 +337,10 @@ async def on_voice_state_update(member, before, after):
             channel = client.get_channel(lobby_id)
             if channel and len(channel.members) == 0:
                 await channel.delete()
+
     try:
         # changes their name back to normal if they leave queue
-        if before.channel is not None and before.channel.id == 1243315994273910894:
+        if before.channel is not None and before.channel.id == 1247921762155495580:
             role_names = [":Berserk:", ":Archer:", ":Tank:", ":Mage:", ":Healer:"]
             new_nickname = member.display_name
             for role in role_names:
@@ -401,12 +403,26 @@ def get_valid_players(floor):
 
     return valid_players
 
+def get_userdata(user):
+    json_database.add_data(
+
+        "User = "+ user.name,
+        {
+            "user": str(user.name),
+            "user_id": str(user.id),
+            "user_discriminator": str(user.discriminator),
+            "nickname": str(user.nick),
+            "avatar": str(user.avatar),
+            "roles": [role.name for role in user.roles],
+            "joined_at": str(user.joined_at),
+            "created_at": str(user.created_at)
+        }
+    )
+    print("Userdata added")
+
 client.run("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0")
 
 #TODO
-# json_database Logikanpassen, dass bei aufruf direkt key value übergeben werden kann
-# add_data(username, guild.username)
-# Logik in json_database so anpassen, dass nicht nur ein dict, sondern eine JSON Datei erstellt wird
 
 # HOW TO USE
 # send Floor 1-7 Messages into chat and react with class reactions
