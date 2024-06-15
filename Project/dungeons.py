@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
-import json_database
 import os
-import json
 import requests
 
 TOKEN = os.getenv("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXedpYs0")
@@ -409,7 +407,8 @@ def get_valid_players(floor):
     return valid_players
 
 def get_userdata(user):
-    url = "http://container2:8000/database"
+    # url anpassen http://127.0.0.1:5000/database
+    url = "http://container1:5000/database"
     data = {
         "user": str(user.name),
         "user_id": str(user.id),

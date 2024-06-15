@@ -1,9 +1,11 @@
 from flask import Flask, request
 import os
 import json
+import requests
 
 app = Flask(__name__)
 
+json_database_url = "http://cloudcomputing-container2-1:8000/app/json_database.py"
 # Pfad zur JSON-Datenbankdatei
 database_file = 'database.json'
 # check for database.json, if not exists create empty
@@ -13,14 +15,34 @@ if not os.path.exists(database_file):
 # Pfad zur JSON-Datenbankdatei
 database_file = 'database.json'
 
-@app.route('/database', methods=['GET'])
-def get_database():
-    # loads database
-    with open(database_file, 'r') as f:
-        database = json.load(f)
-    return database
+@app.route('/', methods=['GET'])
+def index():
+    return 'Hello, World!'
 
-@app.route('/database', methods=['POST',  'PUT', 'GET'])
+def get_database():
+    try:
+        response = requests.get(json_database_url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Failed to get database. Status code: {response.status_code}")
+            return {}
+    except Exception as e:
+        print(f"Error while getting database: {str(e)}")
+        return {}
+
+@app.route('/database/getdb', methods=['GET'])
+def get_database_route():
+    # Database vom lokalen Filesystem laden
+    with open(database_file, 'r') as f:
+        local_database = json.load(f)
+    # Database vom Datenbank-Microservice abrufen
+    remote_database = get_database()
+    # Merge local und remote Database
+    merged_database = {**local_database, **remote_database}
+    return merged_database
+
+@app.route('/database', methods=['POST'])
 def add_data():
     if request.method == "POST":
         data = request.json
@@ -46,7 +68,7 @@ def add_data():
         return 'Invalid request method'
 
 
-@app.route('/database/<key>', methods=['PUT'])
+@app.route('/database/updatedb', methods=['PUT'])
 def update_data(givenkey, givenvalue):
     # takes info and updates it
     value = givenvalue
@@ -62,7 +84,7 @@ def update_data(givenkey, givenvalue):
         return 'Value not found'
 
 
-@app.route('/database/<key>', methods=['DELETE'])
+@app.route('/database/rmvdb', methods=['DELETE'])
 def remove_data(key):
     # loads and dels database
     database = get_database()
@@ -78,4 +100,4 @@ def remove_data(key):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=5000)

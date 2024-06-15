@@ -10,6 +10,7 @@ COPY Project/json_database.py Project/database.json /app/
 # Installation der Abhängigkeiten
 RUN pip install discord.py
 RUN pip install flask
+RUN pip install requests
 
 # Befehl zum Ausführen des Microservices
 CMD ["python", "json_database.py"]

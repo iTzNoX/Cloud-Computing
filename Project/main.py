@@ -3,7 +3,7 @@ import importlib.util
 import sys
 import os
 
-def download_and_import_module(url, module_name, module_path='/app'):
+"""def download_and_import_module(url, module_name, module_path='/app'):
     response = requests.get(url)
     if response.status_code == 200:
         module_code = response.text
@@ -19,8 +19,8 @@ def download_and_import_module(url, module_name, module_path='/app'):
         raise Exception(f"Failed to download {module_name}.py from {url}")
 
 # URL des Datenbank-Microservice, der json_database.py hostet
-json_database_url = "http://container2:8000/json_database.py"
-download_and_import_module(json_database_url, "json_database")
+json_database_url = "http://container2:5000/app/json_database.py"
+download_and_import_module(json_database_url, "json_database")"""
 
 import dungeons
 
