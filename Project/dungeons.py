@@ -408,6 +408,7 @@ def get_valid_players(floor):
 
 def get_userdata(user):
     # url anpassen http://127.0.0.1:5000/database
+    # Check
     url = "http://container1:5000/database"
     data = {
         "user": str(user.name),
@@ -438,5 +439,6 @@ client.run("MTI0NzkyNzAxODU3OTAzODI3OA.G6W59m.a6JMkmBHooSvt56u7PNJQRe8R7tLRhWXed
 # react with your role again or leave the vc to dequeue
 # react on another role to change your role but keep your place in queue
 
-# DEBUGGING
-# emoji remove when lobby left
+if __name__ == "__main__":
+    # runs the bot
+    on_ready()
