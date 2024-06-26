@@ -107,6 +107,9 @@ async def on_reaction_add(reaction, user):
         #saves data of all users who ever used or tried to use the queue
         get_userdata(user)
 
+        # removes the rest of the code for simplicity reasons for the Project
+        return
+
         # checks for floor queue
         floor_id = reaction.message.id
         if floor_id == f1:
